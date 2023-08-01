@@ -23,5 +23,6 @@ public class ProfileService {
 //    public ProfileOut update(Long id, ProfileIn model) {
 //        ProfileEntity profileEntity = model.convertToEntity(new ProfileEntity());
 //
+//        return new ProfileOut()
 //    }
 }

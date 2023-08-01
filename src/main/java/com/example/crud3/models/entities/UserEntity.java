@@ -5,7 +5,7 @@ import lombok.Data;
 import javax.persistence.*;
 
 @Data
-@Entity(name = "user_entity")
+@Entity(name = "users")
 public class UserEntity {
     @OneToOne
     @JoinColumn(name = "profile_id", referencedColumnName = "id")

@@ -29,6 +29,6 @@ public class ProfileController {
 
 //    @PutMapping("/update/{id}")
 //    public ResponseEntity<ProfileOut> update(@PathVariable Long id, @Valid @RequestBody ProfileIn model, BindingResult bindingResult) {
-//        profileService.update(id, model);
+//        return new ResponseEntity<>(profileService.update(id, model), HttpStatus.OK);
 //    }
 }

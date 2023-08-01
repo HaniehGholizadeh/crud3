@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 
 
 @Getter
@@ -16,7 +17,7 @@ import javax.validation.constraints.NotNull;
 public class ProfileIn {
     private String city;
     private String country;
-    //    @Pattern(regexp = "[0-9]{10}", message = "code posti bayad 10 raghami bashad.")
+    @Pattern(regexp = "[0-9]{10}", message = "code posti bayad 10 raghami bashad.")
     @NotNull(message = "code posti ra vared konid!!")
     private String postCode;
 

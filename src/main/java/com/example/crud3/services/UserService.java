@@ -4,7 +4,9 @@ import com.example.crud3.exceptionHandler.CustomException;
 import com.example.crud3.models.dtos.UserEditIn;
 import com.example.crud3.models.dtos.UserIn;
 import com.example.crud3.models.dtos.UserOut;
+import com.example.crud3.models.entities.ProfileEntity;
 import com.example.crud3.models.entities.UserEntity;
+import com.example.crud3.repositories.ProfileRepository;
 import com.example.crud3.repositories.UserRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -22,9 +24,11 @@ import java.util.stream.Collectors;
 @Service
 public class UserService {
     private final UserRepository userRepository;
+    final ProfileRepository profileRepository;
 
-    public UserService(UserRepository userRepository) {
+    public UserService(UserRepository userRepository, ProfileRepository profileRepository) {
         this.userRepository = userRepository;
+        this.profileRepository = profileRepository;
     }
 
     public UserOut getById(Long id) {
@@ -32,7 +36,16 @@ public class UserService {
     }
 
     public UserOut create(UserIn model) throws NoSuchAlgorithmException, InvalidKeySpecException {
-        UserEntity userEntity = model.convertToEntity(new UserEntity());
+        UserEntity userEntity;
+        ProfileEntity profile;
+        if (model.getProfileId() == null) {
+            profile = model.convertToEntity(new ProfileEntity());
+            profileRepository.save(profile);
+        } else {
+            profile = profileRepository.findById(model.getProfileId()).orElseThrow(() -> new CustomException("profile not found", 1003, HttpStatus.NOT_FOUND));
+        }
+        userEntity = model.convertToEntity(new UserEntity());
+        userEntity.setProfile((profile));
         userEntity.setPassword(hasPassword(model.getPassword()));
         UserEntity newUser = userRepository.save(userEntity);
         return new UserOut(newUser);

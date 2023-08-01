@@ -2,21 +2,24 @@ package com.example.crud3.models.entities;
 
 import lombok.Data;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.List;
+import java.util.Set;
 
-@Entity
 @Data
+@Entity(name = "posts")
 public class PostEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String title;
     private LocalDateTime date;
-//    private List<TagEntity> tags;
-//    private List<CommentEntity> comments;
+    @ManyToMany
+    @JoinTable(
+            name = "post_tag",
+            joinColumns = @JoinColumn(name = "post_id"),
+            inverseJoinColumns = @JoinColumn(name = "tag_id"))
+    private Set<TagEntity> tags;
+    @OneToMany(mappedBy = "post")
+    private Set<CommentEntity> comments;
 }

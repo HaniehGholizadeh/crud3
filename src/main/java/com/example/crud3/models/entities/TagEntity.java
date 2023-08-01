@@ -3,19 +3,17 @@ package com.example.crud3.models.entities;
 
 import lombok.Data;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import java.util.List;
+import javax.persistence.*;
+import java.util.Set;
 
-@Entity
 @Data
+@Entity(name = "tags")
 public class TagEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
-//    private List<PostEntity> posts;
+    @ManyToMany(mappedBy = "tags")
+    private Set<PostEntity> posts;
 
 }
