@@ -19,4 +19,9 @@ public class ProfileService {
         ProfileEntity profile = profileRepository.save(profileEntity);
         return new ProfileOut(profile);
     }
+
+//    public ProfileOut update(Long id, ProfileIn model) {
+//        ProfileEntity profileEntity = model.convertToEntity(new ProfileEntity());
+//
+//    }
 }

@@ -26,4 +26,9 @@ public class ProfileController {
     public ResponseEntity<ProfileOut> create(@Valid @RequestBody ProfileIn model, BindingResult bindingResult) {
         return new ResponseEntity<>(profileService.create(model), HttpStatus.CREATED);
     }
+
+//    @PutMapping("/update/{id}")
+//    public ResponseEntity<ProfileOut> update(@PathVariable Long id, @Valid @RequestBody ProfileIn model, BindingResult bindingResult) {
+//        profileService.update(id, model);
+//    }
 }
