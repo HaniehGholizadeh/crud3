@@ -3,16 +3,18 @@ package com.example.crud3.models.dtos;
 import com.example.crud3.models.entities.UserEntity;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.validation.constraints.Min;
 import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 
 @Getter
 @Setter
+@NoArgsConstructor
 @AllArgsConstructor
 public class UserIn {
-    @Min(value = 6, message = "Username must have at least 6 characters")
+    @Size(min = 6, message = "Username must have at least 6 characters")
     private String username;
 
     @Pattern(regexp = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=*])(?=\\S+$).{8,20}$", message = "Passwords must have at least 8 characters and contain at least one uppercase letter, lowercase letter, number, and symbol.")
