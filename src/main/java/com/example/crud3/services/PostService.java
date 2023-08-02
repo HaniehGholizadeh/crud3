@@ -27,12 +27,10 @@ public class PostService {
         return new PostOut(postEntity);
     }
 
-    public void addTag(Long id, Long tagId) {
+    public void add_tag(Long id, Long tagId) {
         PostEntity postEntity = postRepository.findById(id).orElseThrow(() -> new CustomException("Post not found", 1004, HttpStatus.NOT_FOUND));
         TagEntity tagEntity = tagRepository.findById(tagId).orElseThrow(() -> new CustomException("Tag not found", 1006, HttpStatus.NOT_FOUND));
-        postEntity.getTags().add(tagEntity);
-        tagEntity.getPosts().add(postEntity);
+        postEntity.addTag(tagEntity);
         postRepository.save(postEntity);
-        tagRepository.save(tagEntity);
     }
 }
