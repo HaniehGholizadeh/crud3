@@ -28,6 +28,6 @@ public class PostController {
 
     @PostMapping("/{id}/addTag/{tagId}")
     public void addTag(@PathVariable Long id, @PathVariable Long tagId) {
-        postService.add_tag(id, tagId);
+        postService.addTag(id, tagId);
     }
 }

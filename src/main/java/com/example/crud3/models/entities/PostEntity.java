@@ -13,12 +13,12 @@ import java.util.Set;
 public class PostEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    public Long id;
+    private Long id;
     private String title;
     @CreationTimestamp
     private LocalDateTime date;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(name = "post_tags",
             joinColumns = {@JoinColumn(name = "post_id")},
             inverseJoinColumns = {@JoinColumn(name = "tag_id")})
@@ -27,8 +27,13 @@ public class PostEntity {
     @OneToMany(mappedBy = "post")
     private Set<CommentEntity> comments;
 
-    public void addTag(TagEntity tag) {
-        this.getTags().add(tag);
-//        tags.add(tag);
+    @Override
+    public String toString() {
+        return "PostEntity{" +
+                "id=" + id +
+                ", title='" + title + '\'' +
+                ", date=" + date +
+                ", comments=" + comments +
+                '}';
     }
 }
