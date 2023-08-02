@@ -1,9 +1,9 @@
 package com.example.crud3.services;
 
 import com.example.crud3.exceptionHandler.CustomException;
-import com.example.crud3.models.dtos.UserEditIn;
-import com.example.crud3.models.dtos.UserIn;
-import com.example.crud3.models.dtos.UserOut;
+import com.example.crud3.models.dtos.userDtos.UserEditIn;
+import com.example.crud3.models.dtos.userDtos.UserIn;
+import com.example.crud3.models.dtos.userDtos.UserOut;
 import com.example.crud3.models.entities.ProfileEntity;
 import com.example.crud3.models.entities.UserEntity;
 import com.example.crud3.repositories.ProfileRepository;

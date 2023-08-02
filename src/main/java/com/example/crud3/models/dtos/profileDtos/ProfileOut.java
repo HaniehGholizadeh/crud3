@@ -1,4 +1,4 @@
-package com.example.crud3.models.dtos;
+package com.example.crud3.models.dtos.profileDtos;
 
 import com.example.crud3.models.entities.ProfileEntity;
 import lombok.AllArgsConstructor;

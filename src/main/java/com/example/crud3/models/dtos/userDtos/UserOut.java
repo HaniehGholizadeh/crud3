@@ -1,6 +1,7 @@
-package com.example.crud3.models.dtos;
+package com.example.crud3.models.dtos.userDtos;
 
 
+import com.example.crud3.models.dtos.profileDtos.ProfileOut;
 import com.example.crud3.models.entities.UserEntity;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

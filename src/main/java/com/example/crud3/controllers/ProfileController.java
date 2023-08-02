@@ -1,7 +1,8 @@
 package com.example.crud3.controllers;
 
-import com.example.crud3.models.dtos.ProfileIn;
-import com.example.crud3.models.dtos.ProfileOut;
+import com.example.crud3.models.dtos.profileDtos.ProfileEditIn;
+import com.example.crud3.models.dtos.profileDtos.ProfileIn;
+import com.example.crud3.models.dtos.profileDtos.ProfileOut;
 import com.example.crud3.services.ProfileService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,14 +22,13 @@ public class ProfileController {
         this.profileService = profileService;
     }
 
-    @ResponseStatus(value = HttpStatus.BAD_GATEWAY)
     @PostMapping("")
     public ResponseEntity<ProfileOut> create(@Valid @RequestBody ProfileIn model, BindingResult bindingResult) {
         return new ResponseEntity<>(profileService.create(model), HttpStatus.CREATED);
     }
 
-//    @PutMapping("/update/{id}")
-//    public ResponseEntity<ProfileOut> update(@PathVariable Long id, @Valid @RequestBody ProfileIn model, BindingResult bindingResult) {
-//        return new ResponseEntity<>(profileService.update(id, model), HttpStatus.OK);
-//    }
+    @PutMapping("/{id}")
+    public ResponseEntity<ProfileOut> update(@PathVariable Long id, @Valid @RequestBody ProfileEditIn model, BindingResult bindingResult) {
+        return new ResponseEntity<>(profileService.update(id, model), HttpStatus.OK);
+    }
 }

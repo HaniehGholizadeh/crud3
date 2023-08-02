@@ -1,8 +1,8 @@
 package com.example.crud3.controllers;
 
-import com.example.crud3.models.dtos.UserEditIn;
-import com.example.crud3.models.dtos.UserIn;
-import com.example.crud3.models.dtos.UserOut;
+import com.example.crud3.models.dtos.userDtos.UserEditIn;
+import com.example.crud3.models.dtos.userDtos.UserIn;
+import com.example.crud3.models.dtos.userDtos.UserOut;
 import com.example.crud3.services.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -48,7 +48,7 @@ public class UserController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<UserOut> update(@PathVariable Long id, @Valid @RequestBody UserEditIn model) throws NoSuchAlgorithmException, InvalidKeySpecException {
+    public ResponseEntity<UserOut> update(@PathVariable Long id, @Valid @RequestBody UserEditIn model, BindingResult bindingResult) throws NoSuchAlgorithmException, InvalidKeySpecException {
         return new ResponseEntity<>(userService.update(id, model), HttpStatus.OK);
     }
 }
