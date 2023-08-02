@@ -1,6 +1,8 @@
 package com.example.crud3.models.entities;
 
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
@@ -8,17 +10,19 @@ import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
-@Data
-@Entity(name = "post_entity")
+@Getter
+@Setter
+//@Data
+@Entity(name = "post")
 public class PostEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    public Long id;
+    private Long id;
     private String title;
     @CreationTimestamp
     private LocalDateTime date;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(name = "post_tags",
             joinColumns = {@JoinColumn(name = "post_id")},
             inverseJoinColumns = {@JoinColumn(name = "tag_id")})
@@ -27,8 +31,13 @@ public class PostEntity {
     @OneToMany(mappedBy = "post")
     private Set<CommentEntity> comments;
 
-    public void addTag(TagEntity tag) {
-        this.getTags().add(tag);
-//        tags.add(tag);
+    @Override
+    public String toString() {
+        return "PostEntity{" +
+                "id=" + id +
+                ", title='" + title + '\'' +
+                ", date=" + date +
+                ", comments=" + comments +
+                '}';
     }
 }

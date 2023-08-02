@@ -40,6 +40,7 @@ public class UserIn {
         }
         entity.setEmail(email);
         entity.setUsername(username);
+        entity.setPassword(password);
         return entity;
     }
 

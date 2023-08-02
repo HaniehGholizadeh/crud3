@@ -36,17 +36,11 @@ public class UserService {
     }
 
     public UserOut create(UserIn model) throws NoSuchAlgorithmException, InvalidKeySpecException {
-        UserEntity userEntity;
-        ProfileEntity profile;
-        if (model.getProfileId() == null) {
-            profile = model.convertToEntity(new ProfileEntity());
-            profileRepository.save(profile);
-        } else {
-            profile = profileRepository.findById(model.getProfileId()).orElseThrow(() -> new CustomException("profile not found", 1003, HttpStatus.NOT_FOUND));
-        }
-        userEntity = model.convertToEntity(new UserEntity());
+        model.setPassword((hasPassword(model.getPassword())));
+        ProfileEntity profile = model.convertToEntity(new ProfileEntity());
+        profileRepository.save(profile);
+        UserEntity userEntity = model.convertToEntity(new UserEntity());
         userEntity.setProfile((profile));
-        userEntity.setPassword(hasPassword(model.getPassword()));
         UserEntity newUser = userRepository.save(userEntity);
         return new UserOut(newUser);
     }
@@ -76,10 +70,10 @@ public class UserService {
 
 
     public UserOut update(Long id, UserEditIn model) throws NoSuchAlgorithmException, InvalidKeySpecException {
-        UserEntity user = userRepository.findById(id).orElseThrow(() -> new CustomException("User not found", 1002, HttpStatus.NOT_FOUND));
+        UserEntity userEntity = userRepository.findById(id).orElseThrow(() -> new CustomException("User not found", 1002, HttpStatus.NOT_FOUND));
         model.setPassword(hasPassword(model.getPassword()));
-        model.convertToEntity(user);
-        UserEntity updatedUser = userRepository.save(user);
+        model.convertToEntity(userEntity);
+        UserEntity updatedUser = userRepository.save(userEntity);
         return new UserOut(updatedUser);
     }
 }

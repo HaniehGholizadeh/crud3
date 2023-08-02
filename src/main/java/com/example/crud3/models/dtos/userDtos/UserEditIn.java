@@ -26,6 +26,7 @@ public class UserEditIn {
             entity = new UserEntity();
         }
         entity.setEmail(email);
+        entity.setPassword(password);
         return entity;
     }
 }
