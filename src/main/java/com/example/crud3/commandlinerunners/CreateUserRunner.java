@@ -1,8 +1,12 @@
 package com.example.crud3.commandlinerunners;
 
+import com.example.crud3.models.entities.PostEntity;
 import com.example.crud3.models.entities.ProfileEntity;
+import com.example.crud3.models.entities.TagEntity;
 import com.example.crud3.models.entities.UserEntity;
+import com.example.crud3.repositories.PostRepository;
 import com.example.crud3.repositories.ProfileRepository;
+import com.example.crud3.repositories.TagRepository;
 import com.example.crud3.repositories.UserRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
@@ -13,9 +17,15 @@ public class CreateUserRunner implements CommandLineRunner {
     private final UserRepository userRepository;
     private final ProfileRepository profileRepository;
 
-    public CreateUserRunner(UserRepository userRepository, ProfileRepository profileRepository) {
+    private final TagRepository tagRepository;
+
+    private final PostRepository postRepository;
+
+    public CreateUserRunner(UserRepository userRepository, ProfileRepository profileRepository, TagRepository tagRepository, PostRepository postRepository) {
         this.userRepository = userRepository;
         this.profileRepository = profileRepository;
+        this.tagRepository = tagRepository;
+        this.postRepository = postRepository;
     }
 
     @Override
@@ -61,6 +71,23 @@ public class CreateUserRunner implements CommandLineRunner {
         userRepository.save(user1);
         userRepository.save(user2);
         userRepository.save(user3);
+
+
+        TagEntity tag1 = new TagEntity();
+        tag1.setName("lavazem khanegi");
+
+        TagEntity tag2 = new TagEntity();
+        tag2.setName("lavazem behdashti");
+
+        TagEntity tag3 = new TagEntity();
+        tag3.setName("lavazem varzeshi");
+
+        tagRepository.save(tag1);
+        tagRepository.save(tag2);
+        tagRepository.save(tag3);
+
+        PostEntity post = new PostEntity();
+        postRepository.save(post);
 
     }
 }

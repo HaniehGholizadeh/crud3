@@ -7,10 +7,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
 
 @RestController
 @Validated
@@ -23,7 +22,12 @@ public class PostController {
     }
 
     @PostMapping("")
-    public ResponseEntity<PostOut> create(@RequestBody PostIn model, BindingResult bindingResult) {
+    public ResponseEntity<PostOut> create(@Valid @RequestBody PostIn model, BindingResult bindingResult) {
         return new ResponseEntity<>(postService.create(model), HttpStatus.OK);
+    }
+
+    @PostMapping("/{id}/addTag/{tagId}")
+    public void addTag(@PathVariable Long id, @PathVariable Long tagId) {
+        postService.add_tag(id, tagId);
     }
 }

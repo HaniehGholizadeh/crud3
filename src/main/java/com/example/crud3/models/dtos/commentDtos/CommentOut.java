@@ -15,7 +15,7 @@ public class CommentOut {
 
     public CommentOut(CommentEntity entity) {
         if (entity != null) {
-            result = "comment added!";
+            result = String.format("comment with id=%d added!", entity.getId());
         }
     }
 }
