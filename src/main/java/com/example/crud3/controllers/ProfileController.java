@@ -31,4 +31,5 @@ public class ProfileController {
     public ResponseEntity<ProfileOut> update(@PathVariable Long id, @Valid @RequestBody ProfileEditIn model, BindingResult bindingResult) {
         return new ResponseEntity<>(profileService.update(id, model), HttpStatus.OK);
     }
+
 }

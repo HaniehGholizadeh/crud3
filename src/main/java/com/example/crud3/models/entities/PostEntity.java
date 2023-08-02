@@ -1,6 +1,7 @@
 package com.example.crud3.models.entities;
 
 import lombok.Data;
+import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -13,6 +14,7 @@ public class PostEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String title;
+    @CreationTimestamp
     private LocalDateTime date;
     @ManyToMany
     @JoinTable(

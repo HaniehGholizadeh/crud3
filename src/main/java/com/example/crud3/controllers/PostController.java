@@ -6,12 +6,15 @@ import com.example.crud3.services.PostService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/api/post")
+@Validated
+@RequestMapping("/api/posts")
 public class PostController {
     final PostService postService;
 
@@ -19,6 +22,7 @@ public class PostController {
         this.postService = postService;
     }
 
+    @PostMapping("")
     public ResponseEntity<PostOut> create(@RequestBody PostIn model, BindingResult bindingResult) {
         return new ResponseEntity<>(postService.create(model), HttpStatus.OK);
     }

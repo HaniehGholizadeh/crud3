@@ -1,6 +1,8 @@
 package com.example.crud3.models.entities;
 
 import lombok.Data;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 
@@ -10,8 +12,11 @@ public class CommentEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     private String text;
-    @ManyToOne
-    @JoinColumn(name = "post_id", nullable = false)
+
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "post", nullable = false)
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private PostEntity post;
 }

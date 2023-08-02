@@ -2,6 +2,7 @@ package com.example.crud3.services;
 
 import com.example.crud3.models.dtos.postDtos.PostIn;
 import com.example.crud3.models.dtos.postDtos.PostOut;
+import com.example.crud3.models.entities.PostEntity;
 import com.example.crud3.repositories.PostRepository;
 import org.springframework.stereotype.Service;
 
@@ -15,6 +16,8 @@ public class PostService {
     }
 
     public PostOut create(PostIn model) {
-        return new PostOut();
+        PostEntity postEntity = model.convertToEntity(new PostEntity());
+        postRepository.save(postEntity);
+        return new PostOut(postEntity);
     }
 }
