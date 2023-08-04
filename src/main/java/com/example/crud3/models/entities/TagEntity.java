@@ -12,7 +12,6 @@ import java.util.Set;
 
 @Getter
 @Setter
-//@Data
 @Entity(name = "tags")
 public class TagEntity {
     @Id

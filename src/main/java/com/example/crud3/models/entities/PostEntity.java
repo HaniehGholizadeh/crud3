@@ -1,6 +1,5 @@
 package com.example.crud3.models.entities;
 
-import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
@@ -12,7 +11,6 @@ import java.util.Set;
 
 @Getter
 @Setter
-//@Data
 @Entity(name = "post")
 public class PostEntity {
     @Id
@@ -29,7 +27,7 @@ public class PostEntity {
     private Set<TagEntity> tags = new HashSet<>();
 
     @OneToMany(mappedBy = "post")
-    private Set<CommentEntity> comments;
+    private Set<CommentEntity> comments = new HashSet<>();
 
     @Override
     public String toString() {

@@ -64,14 +64,18 @@ public class UserService {
     }
 
     public void deleteById(Long id) {
-        UserEntity user = userRepository.findById(id).orElseThrow(() -> new CustomException("user not found", 1001, HttpStatus.NOT_FOUND));
+        UserEntity user = userRepository.findById(id).orElseThrow(() -> new CustomException("User not found", 1001, HttpStatus.NOT_FOUND));
         userRepository.delete(user);
     }
 
 
     public UserOut update(Long id, UserEditIn model) throws NoSuchAlgorithmException, InvalidKeySpecException {
         UserEntity userEntity = userRepository.findById(id).orElseThrow(() -> new CustomException("User not found", 1002, HttpStatus.NOT_FOUND));
-        model.setPassword(hasPassword(model.getPassword()));
+        ProfileEntity profileEntity = model.convertToEntity(userEntity.getProfile());
+        profileRepository.save(profileEntity);
+        if (model.getPassword() != null) {
+            model.setPassword(hasPassword(model.getPassword()));
+        }
         model.convertToEntity(userEntity);
         UserEntity updatedUser = userRepository.save(userEntity);
         return new UserOut(updatedUser);

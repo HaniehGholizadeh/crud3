@@ -10,6 +10,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @RestController
 @Validated
@@ -30,4 +31,15 @@ public class PostController {
     public void addTag(@PathVariable Long id, @PathVariable Long tagId) {
         postService.addTag(id, tagId);
     }
+
+    @GetMapping("/{id}/tags")
+    public ResponseEntity<List<String>> getTags(@PathVariable Long id) {
+        return new ResponseEntity<>(postService.getTags(id), HttpStatus.OK);
+    }
+
+    @DeleteMapping("{id}")
+    public void deleteById(@PathVariable Long id) {
+        postService.deleteById(id);
+    }
+
 }

@@ -1,13 +1,7 @@
 package com.example.crud3.commandlinerunners;
 
-import com.example.crud3.models.entities.PostEntity;
-import com.example.crud3.models.entities.ProfileEntity;
-import com.example.crud3.models.entities.TagEntity;
-import com.example.crud3.models.entities.UserEntity;
-import com.example.crud3.repositories.PostRepository;
-import com.example.crud3.repositories.ProfileRepository;
-import com.example.crud3.repositories.TagRepository;
-import com.example.crud3.repositories.UserRepository;
+import com.example.crud3.models.entities.*;
+import com.example.crud3.repositories.*;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
@@ -16,16 +10,16 @@ import org.springframework.stereotype.Component;
 public class CreateUserRunner implements CommandLineRunner {
     private final UserRepository userRepository;
     private final ProfileRepository profileRepository;
-
     private final TagRepository tagRepository;
-
     private final PostRepository postRepository;
+    private final CommentRepository commentRepository;
 
-    public CreateUserRunner(UserRepository userRepository, ProfileRepository profileRepository, TagRepository tagRepository, PostRepository postRepository) {
+    public CreateUserRunner(UserRepository userRepository, ProfileRepository profileRepository, TagRepository tagRepository, PostRepository postRepository, CommentRepository commentRepository) {
         this.userRepository = userRepository;
         this.profileRepository = profileRepository;
         this.tagRepository = tagRepository;
         this.postRepository = postRepository;
+        this.commentRepository = commentRepository;
     }
 
     @Override
@@ -86,9 +80,38 @@ public class CreateUserRunner implements CommandLineRunner {
         tagRepository.save(tag2);
         tagRepository.save(tag3);
 
+        CommentEntity com1 = new CommentEntity();
+        com1.setText("comment 1 text is here");
+
+        CommentEntity com2 = new CommentEntity();
+        com2.setText("comment 2 text is here");
+
+        CommentEntity com3 = new CommentEntity();
+        com3.setText("comment 3 text is here");
+
+        CommentEntity com4 = new CommentEntity();
+        com4.setText("comment 4 text is here");
+
         PostEntity post = new PostEntity();
         post.setTitle("the test post");
+
+        post.getComments().add(com1);
+        post.getComments().add(com2);
+        post.getComments().add(com3);
+        post.getComments().add(com4);
+
+        com1.setPost(post);
+        com2.setPost(post);
+        com3.setPost(post);
+        com4.setPost(post);
+
         postRepository.save(post);
+
+        commentRepository.save(com1);
+        commentRepository.save(com2);
+        commentRepository.save(com3);
+        commentRepository.save(com4);
+
 
     }
 }

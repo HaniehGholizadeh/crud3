@@ -1,14 +1,17 @@
 package com.example.crud3.models.entities;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.*;
 
-@Data
+
 @Entity(name = "users")
+@Getter
+@Setter
 public class UserEntity {
-    @OneToOne
-    @JoinColumn(name = "profile_id", referencedColumnName = "id")
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+    @JoinColumn(name = "profile_id")
     private ProfileEntity profile;
 
     @Id

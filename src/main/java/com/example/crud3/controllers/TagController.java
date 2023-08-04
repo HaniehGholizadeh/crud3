@@ -3,16 +3,13 @@ package com.example.crud3.controllers;
 import com.example.crud3.models.dtos.tagDtos.TagIn;
 import com.example.crud3.models.dtos.tagDtos.TagOut;
 import com.example.crud3.services.TagService;
-import org.hibernate.mapping.TableOwner;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @Validated
 @RestController
@@ -25,7 +22,27 @@ public class TagController {
     }
 
     @PostMapping("")
-    public ResponseEntity<TagOut> create(@Valid @RequestBody TagIn model){
+    public ResponseEntity<TagOut> create(@Valid @RequestBody TagIn model) {
         return new ResponseEntity<>(tagService.create(model), HttpStatus.OK);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<TagOut> getById(@PathVariable Long id) {
+        return new ResponseEntity<>(tagService.getById(id), HttpStatus.OK);
+    }
+
+    @GetMapping("")
+    public ResponseEntity<List<String>> getAll() {
+        return new ResponseEntity<>(tagService.getALl(), HttpStatus.OK);
+    }
+
+    @DeleteMapping("/{id}")
+    public void deleteById(@PathVariable Long id) {
+        tagService.deleteById(id);
+    }
+
+    @GetMapping("/{id}/post")
+    public ResponseEntity<List<String >> getPosts(@PathVariable Long id){
+        return new ResponseEntity<>(tagService.getPosts(id), HttpStatus.OK);
     }
 }

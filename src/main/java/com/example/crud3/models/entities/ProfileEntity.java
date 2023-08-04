@@ -1,12 +1,14 @@
 package com.example.crud3.models.entities;
 
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.*;
 
-@Data
 @Entity(name = "profiles")
+@Getter
+@Setter
 public class ProfileEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -14,5 +16,8 @@ public class ProfileEntity {
     private String city;
     private String country;
     private String postCode;
+
+    @OneToOne(fetch = FetchType.LAZY, mappedBy = "profile")
+    private UserEntity user;
 
 }

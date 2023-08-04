@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
@@ -27,10 +28,10 @@ public class UserIn {
             "(?:[a-zA-Z0-9_+&*-]+\\.)+[a-zA-Z]{2,7}$", message = "Invalid email")
     private String email;
 
-    private Long profileId;
     private String city;
     private String country;
     @Pattern(regexp = "[0-9]{10}", message = "code posti bayad 10 raghami bashad.")
+    @NotNull(message = "code posti ra vared konid!!")
     private String postCode;
 
 
