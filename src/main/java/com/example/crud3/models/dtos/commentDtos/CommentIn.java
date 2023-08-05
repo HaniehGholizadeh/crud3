@@ -12,7 +12,6 @@ import lombok.Setter;
 @AllArgsConstructor
 public class CommentIn {
     private String text;
-
     public CommentEntity convertToEntity(CommentEntity entity) {
         if (entity == null) {
             entity = new CommentEntity();

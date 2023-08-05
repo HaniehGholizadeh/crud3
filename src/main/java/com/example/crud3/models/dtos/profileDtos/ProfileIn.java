@@ -18,7 +18,7 @@ public class ProfileIn {
     private String city;
     private String country;
     @Pattern(regexp = "[0-9]{10}", message = "code posti bayad 10 raghami bashad.")
-    @NotNull(message = "code posti ra vared konid!!")
+    @NotNull(message = "code posti ra vared konid")
     private String postCode;
 
     public ProfileEntity convertToEntity(ProfileEntity entity) {

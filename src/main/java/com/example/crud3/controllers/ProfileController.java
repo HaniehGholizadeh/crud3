@@ -1,6 +1,7 @@
 package com.example.crud3.controllers;
 
 import com.example.crud3.models.dtos.profileDtos.ProfileEditIn;
+import com.example.crud3.models.dtos.profileDtos.ProfileIn;
 import com.example.crud3.models.dtos.profileDtos.ProfileOut;
 import com.example.crud3.services.ProfileService;
 import org.springframework.http.HttpStatus;
@@ -14,7 +15,7 @@ import java.util.List;
 
 @Validated
 @RestController
-@RequestMapping("/api/users")
+@RequestMapping("/api/profiles")
 public class ProfileController {
     final ProfileService profileService;
 
@@ -22,10 +23,10 @@ public class ProfileController {
         this.profileService = profileService;
     }
 
-//    @PostMapping("")
-//    public ResponseEntity<ProfileOut> create(@Valid @RequestBody ProfileIn model, BindingResult bindingResult) {
-//        return new ResponseEntity<>(profileService.create(model), HttpStatus.CREATED);
-//    }
+    @PostMapping("")
+    public ResponseEntity<ProfileOut> create(@Valid @RequestBody ProfileIn model, BindingResult bindingResult) {
+        return new ResponseEntity<>(profileService.create(model), HttpStatus.CREATED);
+    }
 
     @PutMapping("{id}/profile")
     public ResponseEntity<ProfileOut> update(@PathVariable Long id, @Valid @RequestBody ProfileEditIn model, BindingResult bindingResult) {

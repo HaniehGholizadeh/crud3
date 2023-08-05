@@ -39,4 +39,10 @@ public class CommentService {
         }
         commentRepository.delete(commentEntity.get());
     }
+
+    public void update(Long id, CommentIn model) {
+        CommentEntity commentEntity = commentRepository.findById(id).orElseThrow(() -> new CustomException("Comment not found", 1011, HttpStatus.NOT_FOUND));
+        CommentEntity updatedComment = model.convertToEntity(commentEntity);
+        commentRepository.save(updatedComment);
+    }
 }

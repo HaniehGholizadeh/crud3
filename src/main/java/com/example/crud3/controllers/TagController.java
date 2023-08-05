@@ -1,5 +1,6 @@
 package com.example.crud3.controllers;
 
+import com.example.crud3.models.dtos.postDtos.PostOut;
 import com.example.crud3.models.dtos.tagDtos.TagIn;
 import com.example.crud3.models.dtos.tagDtos.TagOut;
 import com.example.crud3.services.TagService;
@@ -32,7 +33,7 @@ public class TagController {
     }
 
     @GetMapping("")
-    public ResponseEntity<List<String>> getAll() {
+    public ResponseEntity<List<TagOut>> getAll() {
         return new ResponseEntity<>(tagService.getALl(), HttpStatus.OK);
     }
 
@@ -42,7 +43,7 @@ public class TagController {
     }
 
     @GetMapping("/{id}/post")
-    public ResponseEntity<List<String >> getPosts(@PathVariable Long id){
+    public ResponseEntity<List<PostOut>> getPosts(@PathVariable Long id) {
         return new ResponseEntity<>(tagService.getPosts(id), HttpStatus.OK);
     }
 }

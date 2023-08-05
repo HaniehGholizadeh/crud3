@@ -3,6 +3,7 @@ package com.example.crud3.services;
 import com.example.crud3.exceptionHandler.CustomException;
 import com.example.crud3.models.dtos.postDtos.PostIn;
 import com.example.crud3.models.dtos.postDtos.PostOut;
+import com.example.crud3.models.dtos.tagDtos.TagOut;
 import com.example.crud3.models.entities.PostEntity;
 import com.example.crud3.models.entities.TagEntity;
 import com.example.crud3.repositories.PostRepository;
@@ -39,13 +40,18 @@ public class PostService {
         tagRepository.save(tagEntity);
     }
 
-    public List<String> getTags(Long id) {
+    public List<TagOut> getTags(Long id) {
         PostEntity postEntity = postRepository.findById(id).orElseThrow(() -> new CustomException("Post not found", 1004, HttpStatus.NOT_FOUND));
-        return postEntity.getTags().stream().map(TagEntity::getName).collect(Collectors.toList());
+        return postEntity.getTags().stream().map(TagOut::new).collect(Collectors.toList());
     }
 
     public void deleteById(Long id) {
         PostEntity post = postRepository.findById(id).orElseThrow(() -> new CustomException("Post not found", 1010, HttpStatus.NOT_FOUND));
         postRepository.delete(post);
     }
+
+    public List<PostOut> getAllPosts() {
+        return postRepository.findAll().stream().map(PostOut::new).collect(Collectors.toList());
+    }
+
 }

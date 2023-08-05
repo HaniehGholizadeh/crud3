@@ -36,7 +36,7 @@ public class UserController {
         return new ResponseEntity<>(userService.getALl(), HttpStatus.OK);
     }
 
-    @ResponseStatus(value = HttpStatus.BAD_GATEWAY)
+
     @PostMapping("")
     public ResponseEntity<UserOut> create(@Valid @RequestBody UserIn model, BindingResult bindingResult) throws InvalidKeySpecException, NoSuchAlgorithmException {
         return new ResponseEntity<>(userService.create(model), HttpStatus.CREATED);

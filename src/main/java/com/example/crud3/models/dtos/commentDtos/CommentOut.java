@@ -11,11 +11,13 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class CommentOut {
-    private String result;
+    private Long id;
+    private String text;
 
     public CommentOut(CommentEntity entity) {
         if (entity != null) {
-            result = String.format("comment with id=%d added!", entity.getId());
+            id = entity.getId();
+            text = entity.getText();
         }
     }
 }

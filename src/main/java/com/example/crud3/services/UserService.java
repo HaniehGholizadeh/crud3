@@ -4,7 +4,6 @@ import com.example.crud3.exceptionHandler.CustomException;
 import com.example.crud3.models.dtos.userDtos.UserEditIn;
 import com.example.crud3.models.dtos.userDtos.UserIn;
 import com.example.crud3.models.dtos.userDtos.UserOut;
-import com.example.crud3.models.entities.ProfileEntity;
 import com.example.crud3.models.entities.UserEntity;
 import com.example.crud3.repositories.ProfileRepository;
 import com.example.crud3.repositories.UserRepository;
@@ -24,7 +23,7 @@ import java.util.stream.Collectors;
 @Service
 public class UserService {
     private final UserRepository userRepository;
-    final ProfileRepository profileRepository;
+    private final ProfileRepository profileRepository;
 
     public UserService(UserRepository userRepository, ProfileRepository profileRepository) {
         this.userRepository = userRepository;
@@ -37,12 +36,9 @@ public class UserService {
 
     public UserOut create(UserIn model) throws NoSuchAlgorithmException, InvalidKeySpecException {
         model.setPassword((hasPassword(model.getPassword())));
-        ProfileEntity profile = model.convertToEntity(new ProfileEntity());
-        profileRepository.save(profile);
         UserEntity userEntity = model.convertToEntity(new UserEntity());
-        userEntity.setProfile((profile));
-        UserEntity newUser = userRepository.save(userEntity);
-        return new UserOut(newUser);
+        profileRepository.save(userEntity.getProfile());
+        return new UserOut(userRepository.save(userEntity));
     }
 
     private String hasPassword(String password) throws NoSuchAlgorithmException, InvalidKeySpecException {
@@ -71,13 +67,10 @@ public class UserService {
 
     public UserOut update(Long id, UserEditIn model) throws NoSuchAlgorithmException, InvalidKeySpecException {
         UserEntity userEntity = userRepository.findById(id).orElseThrow(() -> new CustomException("User not found", 1002, HttpStatus.NOT_FOUND));
-        ProfileEntity profileEntity = model.convertToEntity(userEntity.getProfile());
-        profileRepository.save(profileEntity);
         if (model.getPassword() != null) {
             model.setPassword(hasPassword(model.getPassword()));
         }
         model.convertToEntity(userEntity);
-        UserEntity updatedUser = userRepository.save(userEntity);
-        return new UserOut(updatedUser);
+        return new UserOut(userRepository.save(userEntity));
     }
 }

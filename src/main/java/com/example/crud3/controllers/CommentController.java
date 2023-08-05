@@ -12,7 +12,7 @@ import javax.validation.Valid;
 
 @RestController
 @Validated
-@RequestMapping("/api/posts")
+@RequestMapping("/api/posts/{postId}/comments")
 public class CommentController {
     final CommentService commentService;
 
@@ -20,13 +20,18 @@ public class CommentController {
         this.commentService = commentService;
     }
 
-    @PostMapping("/{postId}/comments")
+    @PostMapping("")
     public ResponseEntity<CommentOut> create(@PathVariable Long postId, @Valid @RequestBody CommentIn model) {
         return new ResponseEntity<>(commentService.create(postId, model), HttpStatus.OK);
     }
 
-    @DeleteMapping("{postId}/comments/{id}")
+    @DeleteMapping("{id}")
     public void delete(@PathVariable Long id, @PathVariable Long postId) {
         commentService.delete(id, postId);
+    }
+
+    @PutMapping("{id}")
+    public void update(@PathVariable Long id, CommentIn model) {
+        commentService.update(id, model);
     }
 }

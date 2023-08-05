@@ -12,14 +12,12 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ProfileOut {
-    private Long id;
     private String city;
     private String country;
     private String postCode;
 
     public ProfileOut(ProfileEntity entity) {
         if (entity != null) {
-            this.id = entity.getId();
             this.city = entity.getCity();
             this.country = entity.getCountry();
             this.postCode = entity.getPostCode();

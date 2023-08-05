@@ -2,6 +2,7 @@ package com.example.crud3.controllers;
 
 import com.example.crud3.models.dtos.postDtos.PostIn;
 import com.example.crud3.models.dtos.postDtos.PostOut;
+import com.example.crud3.models.dtos.tagDtos.TagOut;
 import com.example.crud3.services.PostService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -33,13 +34,18 @@ public class PostController {
     }
 
     @GetMapping("/{id}/tags")
-    public ResponseEntity<List<String>> getTags(@PathVariable Long id) {
+    public ResponseEntity<List<TagOut>> getTags(@PathVariable Long id) {
         return new ResponseEntity<>(postService.getTags(id), HttpStatus.OK);
     }
 
     @DeleteMapping("{id}")
     public void deleteById(@PathVariable Long id) {
         postService.deleteById(id);
+    }
+
+    @GetMapping("")
+    public ResponseEntity<List<PostOut>> getAllPosts() {
+        return new ResponseEntity<>(postService.getAllPosts(), HttpStatus.OK);
     }
 
 }
