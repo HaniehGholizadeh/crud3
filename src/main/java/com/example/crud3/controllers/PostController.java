@@ -28,7 +28,7 @@ public class PostController {
         return new ResponseEntity<>(postService.create(model), HttpStatus.OK);
     }
 
-    @PostMapping("/{id}/addTag/{tagId}")
+    @PostMapping("/{id}/add-tag/{tagId}")
     public void addTag(@PathVariable Long id, @PathVariable Long tagId) {
         postService.addTag(id, tagId);
     }

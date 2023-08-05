@@ -26,7 +26,8 @@ public class UserIn {
     private String email;
     private String city;
     private String country;
-    @Pattern(regexp = "[0-9]{10}", message = "code posti bayad 10 raghami bashad.")
+    @Size(max = 10)
+    @Pattern(regexp = "[0-9]", message = "code posti bayad 10 raghami bashad.")
     private String postCode;
 
 

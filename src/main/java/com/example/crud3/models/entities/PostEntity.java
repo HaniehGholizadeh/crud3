@@ -2,6 +2,8 @@ package com.example.crud3.models.entities;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
 import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
@@ -20,7 +22,8 @@ public class PostEntity {
     @CreationTimestamp
     private LocalDateTime date;
 
-    @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @ManyToMany(fetch = FetchType.LAZY)
+    @Cascade(CascadeType.SAVE_UPDATE)
     @JoinTable(name = "post_tags",
             joinColumns = {@JoinColumn(name = "post_id")},
             inverseJoinColumns = {@JoinColumn(name = "tag_id")})
