@@ -24,9 +24,9 @@ public class PostEntity {
 
     @ManyToMany(fetch = FetchType.LAZY)
     @Cascade(CascadeType.SAVE_UPDATE)
-    @JoinTable(name = "post_tags",
-            joinColumns = {@JoinColumn(name = "post_id")},
-            inverseJoinColumns = {@JoinColumn(name = "tag_id")})
+    @JoinTable(name = "posts_tags",
+            joinColumns = {@JoinColumn(name = "p_id")},
+            inverseJoinColumns = {@JoinColumn(name = "t_id")})
     private Set<TagEntity> tags = new HashSet<>();
 
     @OneToMany(mappedBy = "post")

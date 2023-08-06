@@ -25,12 +25,12 @@ public class ProfileController {
 
     @PostMapping("")
     public ResponseEntity<ProfileOut> create(@Valid @RequestBody ProfileIn model, BindingResult bindingResult) {
-        return new ResponseEntity<>(profileService.create(model), HttpStatus.CREATED);
+        return new ResponseEntity<>(profileService.createProfile(model), HttpStatus.CREATED);
     }
 
     @PutMapping("{id}/profile")
     public ResponseEntity<ProfileOut> update(@PathVariable Long id, @Valid @RequestBody ProfileEditIn model, BindingResult bindingResult) {
-        return new ResponseEntity<>(profileService.update(id, model), HttpStatus.OK);
+        return new ResponseEntity<>(profileService.updateProfile(id, model), HttpStatus.OK);
     }
 
     @GetMapping("/profiles")

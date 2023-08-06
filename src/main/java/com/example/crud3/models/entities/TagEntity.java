@@ -2,9 +2,10 @@ package com.example.crud3.models.entities;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
 
 import javax.persistence.*;
 import java.util.HashSet;
@@ -19,11 +20,8 @@ public class TagEntity {
     private Long id;
     private String name;
 
+    @Cascade(CascadeType.SAVE_UPDATE)
     @ManyToMany(fetch = FetchType.LAZY,
-            cascade = {
-                    CascadeType.PERSIST,
-                    CascadeType.MERGE
-            },
             mappedBy = "tags")
     @JsonIgnore
     private Set<PostEntity> posts = new HashSet<>();

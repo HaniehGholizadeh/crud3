@@ -1,6 +1,7 @@
 package com.example.crud3.models.dtos.userDtos;
 
 import com.example.crud3.models.dtos.profileDtos.ProfileIn;
+import com.example.crud3.models.entities.ProfileEntity;
 import com.example.crud3.models.entities.UserEntity;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -24,11 +25,7 @@ public class UserIn {
 
     @Pattern(regexp = "^[a-zA-Z0-9_+&*-]+(?:\\." + "[a-zA-Z0-9_+&*-]+)*@" + "(?:[a-zA-Z0-9_+&*-]+\\.)+[a-zA-Z]{2,7}$", message = "Invalid email")
     private String email;
-    private String city;
-    private String country;
-    @Size(max = 10)
-    @Pattern(regexp = "[0-9]", message = "code posti bayad 10 raghami bashad.")
-    private String postCode;
+    private ProfileIn profileIn;
 
 
     public UserEntity convertToEntity(UserEntity entity) {
@@ -38,7 +35,7 @@ public class UserIn {
         entity.setEmail(email);
         entity.setUsername(username);
         entity.setPassword(password);
-        entity.setProfile(new ProfileIn(city, country, postCode).convertToEntity(entity.getProfile()));
+//        entity.setProfile(profileIn.convertToEntity(new ProfileEntity()));
         return entity;
     }
 }

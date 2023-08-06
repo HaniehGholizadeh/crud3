@@ -20,13 +20,13 @@ public class ProfileService {
         this.profileRepository = profileRepository;
     }
 
-    public ProfileOut create(ProfileIn model) {
+    public ProfileOut createProfile(ProfileIn model) {
         ProfileEntity profileEntity = model.convertToEntity(new ProfileEntity());
         ProfileEntity profile = profileRepository.save(profileEntity);
         return new ProfileOut(profile);
     }
 
-    public ProfileOut update(Long id, ProfileEditIn model) {
+    public ProfileOut updateProfile(Long id, ProfileEditIn model) {
         ProfileEntity profile = profileRepository.findById(id).orElseThrow(() -> new CustomException("Profile not found", 1002, HttpStatus.NOT_FOUND));
         model.convertToEntity(new ProfileEntity());
         ProfileEntity updatedProfile = profileRepository.save(profile);

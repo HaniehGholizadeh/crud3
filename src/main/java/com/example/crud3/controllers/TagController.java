@@ -34,7 +34,7 @@ public class TagController {
 
     @GetMapping("")
     public ResponseEntity<List<TagOut>> getAll() {
-        return new ResponseEntity<>(tagService.getALl(), HttpStatus.OK);
+        return new ResponseEntity<>(tagService.getAllTags(), HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")

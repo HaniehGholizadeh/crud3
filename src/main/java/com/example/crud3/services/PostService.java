@@ -5,14 +5,12 @@ import com.example.crud3.models.dtos.postDtos.PostIn;
 import com.example.crud3.models.dtos.postDtos.PostOut;
 import com.example.crud3.models.dtos.tagDtos.TagOut;
 import com.example.crud3.models.entities.PostEntity;
-import com.example.crud3.models.entities.TagEntity;
 import com.example.crud3.repositories.PostRepository;
 import com.example.crud3.repositories.TagRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 
@@ -27,31 +25,37 @@ public class PostService {
 
     public PostOut create(PostIn model) {
         PostEntity postEntity = model.convertToEntity(new PostEntity());
-        postRepository.save(postEntity);
+        postEntity = postRepository.save(postEntity);
+        tagRepository.addTagsToPost(postEntity.getId(), model.getTagIds());
         return new PostOut(postEntity);
     }
 
     public void addTag(Long id, Long tagId) {
-        PostEntity postEntity = postRepository.findById(id).orElseThrow(() -> new CustomException("Post not found", 1004, HttpStatus.NOT_FOUND));
-        TagEntity tagEntity = tagRepository.findById(tagId).orElseThrow(() -> new CustomException("Tag not found", 1006, HttpStatus.NOT_FOUND));
-        postEntity.getTags().add(tagEntity);
-        tagEntity.getPosts().add(postEntity);
-        postRepository.save(postEntity);
-        tagRepository.save(tagEntity);
+        check(id);
+        tagRepository.addTagToPost(id, tagId);
     }
 
+//    public void addTags(Long postId, List<Long> tagIds) {
+//        tagRepository.addTagsToPost(postId, tagIds);
+//    }
+
     public List<TagOut> getTags(Long id) {
-        PostEntity postEntity = postRepository.findById(id).orElseThrow(() -> new CustomException("Post not found", 1004, HttpStatus.NOT_FOUND));
-        return postEntity.getTags().stream().map(TagOut::new).collect(Collectors.toList());
+        check(id);
+        return tagRepository.findTagsByPostId(id).stream().map(TagOut::new).toList();
     }
 
     public void deleteById(Long id) {
-        PostEntity post = postRepository.findById(id).orElseThrow(() -> new CustomException("Post not found", 1010, HttpStatus.NOT_FOUND));
-        postRepository.delete(post);
+        check(id);
+        postRepository.deleteById(id);
     }
 
     public List<PostOut> getAllPosts() {
-        return postRepository.findAll().stream().map(PostOut::new).collect(Collectors.toList());
+        return postRepository.findAll().stream().map(PostOut::new).toList();
     }
 
+    private void check(Long id) throws CustomException {
+        if (!postRepository.existsById(id)) {
+            throw new CustomException("Post not found", 1001, HttpStatus.NOT_FOUND);
+        }
+    }
 }

@@ -6,12 +6,16 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.List;
+import java.util.Set;
+
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 public class PostIn {
     private String title;
+    private Set<Long> tagIds;
 
     public PostEntity convertToEntity(PostEntity entity) {
         if (entity == null) {

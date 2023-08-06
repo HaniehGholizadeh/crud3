@@ -32,14 +32,14 @@ public class UserController {
     }
 
     @GetMapping("")
-    public ResponseEntity<List<UserOut>> getAll() {
-        return new ResponseEntity<>(userService.getALl(), HttpStatus.OK);
+    public ResponseEntity<List<UserOut>> getAllUsers() {
+        return new ResponseEntity<>(userService.getAllUsers(), HttpStatus.OK);
     }
 
 
     @PostMapping("")
-    public ResponseEntity<UserOut> create(@Valid @RequestBody UserIn model, BindingResult bindingResult) throws InvalidKeySpecException, NoSuchAlgorithmException {
-        return new ResponseEntity<>(userService.create(model), HttpStatus.CREATED);
+    public ResponseEntity<UserOut> createUser(@Valid @RequestBody UserIn model, BindingResult bindingResult) throws InvalidKeySpecException, NoSuchAlgorithmException {
+        return new ResponseEntity<>(userService.createUser(model), HttpStatus.CREATED);
     }
 
     @DeleteMapping("/{id}")
@@ -48,7 +48,7 @@ public class UserController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<UserOut> update(@PathVariable Long id, @Valid @RequestBody UserEditIn model, BindingResult bindingResult) throws NoSuchAlgorithmException, InvalidKeySpecException {
-        return new ResponseEntity<>(userService.update(id, model), HttpStatus.OK);
+    public ResponseEntity<UserOut> updateUser(@PathVariable Long id, @Valid @RequestBody UserEditIn model, BindingResult bindingResult) throws NoSuchAlgorithmException, InvalidKeySpecException {
+        return new ResponseEntity<>(userService.updateUser(id, model), HttpStatus.OK);
     }
 }

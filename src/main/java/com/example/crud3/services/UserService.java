@@ -1,9 +1,12 @@
 package com.example.crud3.services;
 
 import com.example.crud3.exceptionHandler.CustomException;
+import com.example.crud3.models.dtos.profileDtos.ProfileIn;
+import com.example.crud3.models.dtos.profileDtos.ProfileOut;
 import com.example.crud3.models.dtos.userDtos.UserEditIn;
 import com.example.crud3.models.dtos.userDtos.UserIn;
 import com.example.crud3.models.dtos.userDtos.UserOut;
+import com.example.crud3.models.entities.ProfileEntity;
 import com.example.crud3.models.entities.UserEntity;
 import com.example.crud3.repositories.ProfileRepository;
 import com.example.crud3.repositories.UserRepository;
@@ -31,14 +34,22 @@ public class UserService {
     }
 
     public UserOut getById(Long id) {
-        return new UserOut(userRepository.findById(id).orElseThrow(() -> new RuntimeException("User not found")));
+        check(id);
+        return new UserOut(userRepository.findById(id).get());
     }
 
-    public UserOut create(UserIn model) throws NoSuchAlgorithmException, InvalidKeySpecException {
+    public UserOut createUser(UserIn model) throws NoSuchAlgorithmException, InvalidKeySpecException {
         model.setPassword((hasPassword(model.getPassword())));
         UserEntity userEntity = model.convertToEntity(new UserEntity());
-        profileRepository.save(userEntity.getProfile());
+        this.createProfile(model.getProfileIn());
+//        userEntity.setProfile(profileEntity);
         return new UserOut(userRepository.save(userEntity));
+    }
+
+    public ProfileOut createProfile(ProfileIn model) {
+        ProfileEntity profileEntity = model.convertToEntity(new ProfileEntity());
+        ProfileEntity profile = profileRepository.save(profileEntity);
+        return new ProfileOut(profile);
     }
 
     private String hasPassword(String password) throws NoSuchAlgorithmException, InvalidKeySpecException {
@@ -51,26 +62,28 @@ public class UserService {
         return Arrays.toString(hash);
     }
 
-    public List<UserOut> getALl() throws CustomException {
-
-        return userRepository.findAll()
-                .stream()
-                .map(UserOut::new)
-                .collect(Collectors.toList());
+    public List<UserOut> getAllUsers() throws CustomException {
+        return userRepository.findAll().stream().map(UserOut::new).collect(Collectors.toList());
     }
 
     public void deleteById(Long id) {
-        UserEntity user = userRepository.findById(id).orElseThrow(() -> new CustomException("User not found", 1001, HttpStatus.NOT_FOUND));
-        userRepository.delete(user);
+        check(id);
+        userRepository.deleteById(id);
     }
 
 
-    public UserOut update(Long id, UserEditIn model) throws NoSuchAlgorithmException, InvalidKeySpecException {
-        UserEntity userEntity = userRepository.findById(id).orElseThrow(() -> new CustomException("User not found", 1002, HttpStatus.NOT_FOUND));
+    public UserOut updateUser(Long id, UserEditIn model) throws NoSuchAlgorithmException, InvalidKeySpecException {
+        check(id);
         if (model.getPassword() != null) {
             model.setPassword(hasPassword(model.getPassword()));
         }
-        model.convertToEntity(userEntity);
+        UserEntity userEntity = model.convertToEntity(new UserEntity());
         return new UserOut(userRepository.save(userEntity));
+    }
+
+    private void check(Long id) {
+        if (!profileRepository.existsById(id)) {
+            throw new CustomException("Usr not found", 100, HttpStatus.NOT_FOUND);
+        }
     }
 }

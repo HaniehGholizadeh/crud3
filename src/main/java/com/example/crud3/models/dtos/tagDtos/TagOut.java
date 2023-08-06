@@ -6,9 +6,9 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.Hibernate;
 
-import java.util.Set;
-import java.util.stream.Collectors;
+import java.util.List;
 
 @Getter
 @Setter
@@ -18,13 +18,14 @@ import java.util.stream.Collectors;
 public class TagOut {
     private Long id;
     private String name;
-    private Set<Long> postsId;
+    private List<Long> postIds;
 
     public TagOut(TagEntity entity) {
         if (entity != null) {
             id = entity.getId();
             name = entity.getName();
-            postsId = entity.getPosts().stream().map(PostEntity::getId).collect(Collectors.toSet());
+            if (Hibernate.isInitialized(entity.getPosts()))
+                postIds = entity.getPosts().stream().map(PostEntity::getId).toList();
         }
     }
 }

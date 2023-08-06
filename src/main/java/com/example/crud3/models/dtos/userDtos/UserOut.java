@@ -18,7 +18,6 @@ public class UserOut {
     private String username;
     private String email;
     private ProfileOut profileOut;
-    private String city;
 
     public UserOut(UserEntity entity) {
         if (entity != null) {
