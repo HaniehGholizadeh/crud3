@@ -9,8 +9,5 @@ import javax.transaction.Transactional;
 
 @Repository
 public interface UserRepository extends JpaRepository<UserEntity, Long> {
-    @Modifying
-    @Transactional
-    UserEntity updateUserEntityById(Long id, UserEntity user);
 
 }

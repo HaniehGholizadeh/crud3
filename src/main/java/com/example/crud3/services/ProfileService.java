@@ -28,8 +28,8 @@ public class ProfileService {
         return profileRepository.findAll().stream().map(ProfileOut::new).collect(Collectors.toList());
     }
 
-    public ProfileEntity updateProfile(Long id, @Valid ProfileEditIn model) {
-        ProfileEntity profileEntity = model.convertToEntity(new ProfileEntity());
-        return profileRepository.updateById(id, profileEntity);
+    public void updateProfile(ProfileEntity profile, @Valid ProfileEditIn model) {
+        ProfileEntity profileEntity = model.convertToEntity(profile);
+        profileRepository.save(profileEntity);
     }
 }

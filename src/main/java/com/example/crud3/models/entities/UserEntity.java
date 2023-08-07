@@ -24,8 +24,8 @@ public class UserEntity {
     @Column(unique = true)
     private String email;
 
-    @Cascade(CascadeType.PERSIST)
-    @OneToOne(fetch = FetchType.LAZY, mappedBy = "user")
+    @Cascade({CascadeType.PERSIST})
+    @OneToOne(mappedBy = "user")
     private ProfileEntity profile;
 }
 

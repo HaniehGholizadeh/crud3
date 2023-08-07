@@ -70,9 +70,9 @@ public class UserService {
             model.setPassword(hashPassword(model.getPassword()));
         }
         UserEntity userEntity = model.convertToEntity(userRepository.findById(id).get());
-        ProfileEntity profileEntity = profileService.updateProfile(id, model.getProfileEditIn());
-        userEntity.setProfile(profileEntity);
-        return new UserOut(userRepository.updateUserEntityById(id, userEntity));
+        ProfileEntity profileEntity = userEntity.getProfile();
+        profileService.updateProfile(profileEntity, model.getProfileEditIn());
+        return new UserOut(userRepository.save(userEntity));
     }
 
     private void check(Long id) {

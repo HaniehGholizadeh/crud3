@@ -4,7 +4,10 @@ package com.example.crud3.models.entities;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.MapsId;
+import javax.persistence.OneToOne;
 
 @Entity(name = "profiles")
 @Getter
@@ -16,7 +19,7 @@ public class ProfileEntity {
     private String country;
     private String postCode;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne
     @MapsId
     private UserEntity user;
 

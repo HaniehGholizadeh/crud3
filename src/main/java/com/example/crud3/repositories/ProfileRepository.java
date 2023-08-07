@@ -9,7 +9,5 @@ import javax.transaction.Transactional;
 
 @Repository
 public interface ProfileRepository extends JpaRepository<ProfileEntity, Long> {
-    @Transactional
-    @Modifying
-    ProfileEntity updateById(Long id, ProfileEntity profile);
+
 }
