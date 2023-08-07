@@ -1,12 +1,13 @@
 package com.example.crud3.models.dtos.postDtos;
 
-import com.example.crud3.models.entities.CommentEntity;
+import com.example.crud3.models.dtos.commentDtos.CommentOut;
+import com.example.crud3.models.dtos.tagDtos.TagOut;
 import com.example.crud3.models.entities.PostEntity;
-import com.example.crud3.models.entities.TagEntity;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.Hibernate;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -18,18 +19,24 @@ import java.util.List;
 public class PostOut {
     private Long id;
     private String title;
-    private LocalDateTime date;
-    private List<Long> commentIds;
-    private List<Long> tagIds;
+    private LocalDateTime publishDate;
+    private LocalDateTime creationDate;
+    private List<CommentOut> commentIds;
+    private List<TagOut> tags;
 
-    //    private Set<TagOut> tags;
     public PostOut(PostEntity entity) {
         if (entity != null) {
-            title = entity.getTitle();
-            date = entity.getDate();
             id = entity.getId();
-            commentIds = entity.getComments().stream().map(CommentEntity::getId).toList();
-            tagIds = entity.getTags().stream().map(TagEntity::getId).toList();
+            title = entity.getTitle();
+            creationDate = entity.getCreationDate();
+            publishDate = entity.getPublishDate();
+            if (Hibernate.isInitialized(entity.getComments())) {
+                commentIds = entity.getComments().stream().map(CommentOut::new).toList();
+            }
+            if (Hibernate.isInitialized(entity.getTags())) {
+                tags = entity.getTags().stream().map(TagOut::new).toList();
+            }
         }
     }
 }
+

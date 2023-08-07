@@ -1,26 +1,24 @@
 package com.example.crud3.commandlinerunners;
 
 import com.example.crud3.models.entities.*;
-import com.example.crud3.repositories.*;
+import com.example.crud3.repositories.CommentRepository;
+import com.example.crud3.repositories.PostRepository;
+import com.example.crud3.repositories.TagRepository;
+import com.example.crud3.repositories.UserRepository;
+import lombok.AllArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.stereotype.Component;
 
 
 @Component
+@AllArgsConstructor
 public class CreateUserRunner implements CommandLineRunner {
     private final UserRepository userRepository;
-    private final ProfileRepository profileRepository;
     private final TagRepository tagRepository;
     private final PostRepository postRepository;
     private final CommentRepository commentRepository;
 
-    public CreateUserRunner(UserRepository userRepository, ProfileRepository profileRepository, TagRepository tagRepository, PostRepository postRepository, CommentRepository commentRepository) {
-        this.userRepository = userRepository;
-        this.profileRepository = profileRepository;
-        this.tagRepository = tagRepository;
-        this.postRepository = postRepository;
-        this.commentRepository = commentRepository;
-    }
 
     @Override
     public void run(String... args) throws Exception {
@@ -54,13 +52,13 @@ public class CreateUserRunner implements CommandLineRunner {
         profile3.setCountry("iran");
         profile3.setPostCode("0123456789");
 
-        profileRepository.save(profile1);
-        profileRepository.save(profile2);
-        profileRepository.save(profile3);
-
         user1.setProfile(profile1);
         user2.setProfile(profile2);
         user3.setProfile(profile3);
+
+        profile1.setUser(user1);
+        profile2.setUser(user2);
+        profile3.setUser(user3);
 
         userRepository.save(user1);
         userRepository.save(user2);
@@ -111,7 +109,6 @@ public class CreateUserRunner implements CommandLineRunner {
         commentRepository.save(com2);
         commentRepository.save(com3);
         commentRepository.save(com4);
-
 
     }
 }

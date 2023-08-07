@@ -1,7 +1,6 @@
 package com.example.crud3.models.dtos.userDtos;
 
 import com.example.crud3.models.dtos.profileDtos.ProfileIn;
-import com.example.crud3.models.entities.ProfileEntity;
 import com.example.crud3.models.entities.UserEntity;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -35,7 +34,6 @@ public class UserIn {
         entity.setEmail(email);
         entity.setUsername(username);
         entity.setPassword(password);
-//        entity.setProfile(profileIn.convertToEntity(new ProfileEntity()));
         return entity;
     }
 }

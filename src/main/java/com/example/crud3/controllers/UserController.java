@@ -1,9 +1,12 @@
 package com.example.crud3.controllers;
 
+import com.example.crud3.models.dtos.profileDtos.ProfileOut;
 import com.example.crud3.models.dtos.userDtos.UserEditIn;
 import com.example.crud3.models.dtos.userDtos.UserIn;
 import com.example.crud3.models.dtos.userDtos.UserOut;
+import com.example.crud3.services.ProfileService;
 import com.example.crud3.services.UserService;
+import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -18,13 +21,11 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/users")
 @Validated
+@AllArgsConstructor
 public class UserController {
 
     final UserService userService;
-
-    public UserController(UserService userService) {
-        this.userService = userService;
-    }
+    final ProfileService profileService;
 
     @GetMapping("/{id}")
     public ResponseEntity<UserOut> getById(@PathVariable Long id) {
@@ -50,5 +51,10 @@ public class UserController {
     @PutMapping("/{id}")
     public ResponseEntity<UserOut> updateUser(@PathVariable Long id, @Valid @RequestBody UserEditIn model, BindingResult bindingResult) throws NoSuchAlgorithmException, InvalidKeySpecException {
         return new ResponseEntity<>(userService.updateUser(id, model), HttpStatus.OK);
+    }
+
+    @GetMapping("/profiles")
+    public ResponseEntity<List<ProfileOut>> getAllProfiles() {
+        return new ResponseEntity<>(profileService.getAllProfiles(), HttpStatus.OK);
     }
 }

@@ -48,4 +48,8 @@ public class PostController {
         return new ResponseEntity<>(postService.getAllPosts(), HttpStatus.OK);
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<PostOut> getPost(@PathVariable Long id) {
+        return new ResponseEntity<>(postService.getPost(id), HttpStatus.OK);
+    }
 }

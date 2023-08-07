@@ -8,12 +8,18 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import javax.transaction.Transactional;
+import java.util.List;
 import java.util.Set;
 
 @Repository
 public interface TagRepository extends JpaRepository<TagEntity, Long> {
-    @Query(value = "select * from tags t join posts_tags pt on pt.t_id=t.id where pt.p_id=:postId", nativeQuery = true)
-    Set<TagEntity> findTagsByPostId(Long postId);
+
+
+    @Query(value = "select entity from tags entity join fetch entity.posts posts  where posts.id = :postId")
+    Set<TagEntity> getTagsByPostId(Long postId);
+
+//    List<TagEntity> findAllBy
+
 
     @Modifying
     @Transactional

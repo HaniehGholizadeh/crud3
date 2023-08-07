@@ -19,8 +19,10 @@ public class PostEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String title;
-    @CreationTimestamp
-    private LocalDateTime date;
+
+    @CreationTimestamp()
+    private LocalDateTime CreationDate;
+    private LocalDateTime publishDate;
 
     @ManyToMany(fetch = FetchType.LAZY)
     @Cascade(CascadeType.SAVE_UPDATE)
@@ -37,7 +39,7 @@ public class PostEntity {
         return "PostEntity{" +
                 "id=" + id +
                 ", title='" + title + '\'' +
-                ", date=" + date +
+                ", date=" + CreationDate +
                 ", comments=" + comments +
                 '}';
     }

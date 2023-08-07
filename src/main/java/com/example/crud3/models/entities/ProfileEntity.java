@@ -11,13 +11,13 @@ import javax.persistence.*;
 @Setter
 public class ProfileEntity {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String city;
     private String country;
     private String postCode;
 
-    @OneToOne(fetch = FetchType.LAZY, mappedBy = "profile")
+    @OneToOne(fetch = FetchType.LAZY)
+    @MapsId
     private UserEntity user;
 
 }

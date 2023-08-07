@@ -5,12 +5,16 @@ import com.example.crud3.models.dtos.postDtos.PostIn;
 import com.example.crud3.models.dtos.postDtos.PostOut;
 import com.example.crud3.models.dtos.tagDtos.TagOut;
 import com.example.crud3.models.entities.PostEntity;
+import com.example.crud3.models.entities.TagEntity;
 import com.example.crud3.repositories.PostRepository;
 import com.example.crud3.repositories.TagRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Service
 
@@ -24,10 +28,13 @@ public class PostService {
     }
 
     public PostOut create(PostIn model) {
+        if (model.getPublishDate().isBefore(LocalDateTime.now())) {
+            throw new CustomException("date and time is invalid", 1111, HttpStatus.BAD_REQUEST);
+        }
         PostEntity postEntity = model.convertToEntity(new PostEntity());
-        postEntity = postRepository.save(postEntity);
-        tagRepository.addTagsToPost(postEntity.getId(), model.getTagIds());
-        return new PostOut(postEntity);
+        List<TagEntity> tags = tagRepository.findAllById(model.getTagIds());
+        postEntity.setTags(new HashSet<>(tags));
+        return new PostOut(postRepository.save(postEntity));
     }
 
     public void addTag(Long id, Long tagId) {
@@ -41,7 +48,8 @@ public class PostService {
 
     public List<TagOut> getTags(Long id) {
         check(id);
-        return tagRepository.findTagsByPostId(id).stream().map(TagOut::new).toList();
+        Set<TagEntity> tags = tagRepository.getTagsByPostId(id);
+        return tags.stream().map(TagOut::new).toList();
     }
 
     public void deleteById(Long id) {
@@ -51,6 +59,12 @@ public class PostService {
 
     public List<PostOut> getAllPosts() {
         return postRepository.findAll().stream().map(PostOut::new).toList();
+    }
+
+
+    public PostOut getPost(Long id) {
+        check(id);
+        return new PostOut(postRepository.findPostEntityById(id));
     }
 
     private void check(Long id) throws CustomException {

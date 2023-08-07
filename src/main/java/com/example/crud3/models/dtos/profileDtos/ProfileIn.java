@@ -8,6 +8,7 @@ import lombok.Setter;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 
 
 @Getter
@@ -17,7 +18,8 @@ import javax.validation.constraints.Pattern;
 public class ProfileIn {
     private String city;
     private String country;
-    @Pattern(regexp = "[0-9]{10}", message = "code posti bayad 10 raghami bashad.")
+    @Size(min = 10, max = 10, message = "code posti bayad 10 raghami bashad.")
+    @Pattern(regexp = "[0-9]+", message = "faghat shamel addad bashad")
     @NotNull(message = "code posti ra vared konid")
     private String postCode;
 
@@ -30,6 +32,4 @@ public class ProfileIn {
         entity.setPostCode(postCode);
         return entity;
     }
-
-
 }

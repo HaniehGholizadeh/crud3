@@ -1,8 +1,6 @@
 package com.example.crud3.services;
 
 import com.example.crud3.exceptionHandler.CustomException;
-import com.example.crud3.models.dtos.profileDtos.ProfileIn;
-import com.example.crud3.models.dtos.profileDtos.ProfileOut;
 import com.example.crud3.models.dtos.userDtos.UserEditIn;
 import com.example.crud3.models.dtos.userDtos.UserIn;
 import com.example.crud3.models.dtos.userDtos.UserOut;
@@ -10,6 +8,7 @@ import com.example.crud3.models.entities.ProfileEntity;
 import com.example.crud3.models.entities.UserEntity;
 import com.example.crud3.repositories.ProfileRepository;
 import com.example.crud3.repositories.UserRepository;
+import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
@@ -24,14 +23,11 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
+@AllArgsConstructor
 public class UserService {
     private final UserRepository userRepository;
     private final ProfileRepository profileRepository;
-
-    public UserService(UserRepository userRepository, ProfileRepository profileRepository) {
-        this.userRepository = userRepository;
-        this.profileRepository = profileRepository;
-    }
+    private final ProfileService profileService;
 
     public UserOut getById(Long id) {
         check(id);
@@ -39,20 +35,16 @@ public class UserService {
     }
 
     public UserOut createUser(UserIn model) throws NoSuchAlgorithmException, InvalidKeySpecException {
-        model.setPassword((hasPassword(model.getPassword())));
+        model.setPassword((hashPassword(model.getPassword())));
         UserEntity userEntity = model.convertToEntity(new UserEntity());
-        this.createProfile(model.getProfileIn());
-//        userEntity.setProfile(profileEntity);
-        return new UserOut(userRepository.save(userEntity));
+        ProfileEntity profileEntity = profileService.createProfile(model.getProfileIn());
+        userEntity.setProfile(profileEntity);
+        profileEntity.setUser(userEntity);
+        userRepository.save(userEntity);
+        return new UserOut(userEntity);
     }
 
-    public ProfileOut createProfile(ProfileIn model) {
-        ProfileEntity profileEntity = model.convertToEntity(new ProfileEntity());
-        ProfileEntity profile = profileRepository.save(profileEntity);
-        return new ProfileOut(profile);
-    }
-
-    private String hasPassword(String password) throws NoSuchAlgorithmException, InvalidKeySpecException {
+    private String hashPassword(String password) throws NoSuchAlgorithmException, InvalidKeySpecException {
         SecureRandom random = new SecureRandom();
         byte[] salt = new byte[16];
         random.nextBytes(salt);
@@ -75,10 +67,12 @@ public class UserService {
     public UserOut updateUser(Long id, UserEditIn model) throws NoSuchAlgorithmException, InvalidKeySpecException {
         check(id);
         if (model.getPassword() != null) {
-            model.setPassword(hasPassword(model.getPassword()));
+            model.setPassword(hashPassword(model.getPassword()));
         }
-        UserEntity userEntity = model.convertToEntity(new UserEntity());
-        return new UserOut(userRepository.save(userEntity));
+        UserEntity userEntity = model.convertToEntity(userRepository.findById(id).get());
+        ProfileEntity profileEntity = profileService.updateProfile(id, model.getProfileEditIn());
+        userEntity.setProfile(profileEntity);
+        return new UserOut(userRepository.updateUserEntityById(id, userEntity));
     }
 
     private void check(Long id) {

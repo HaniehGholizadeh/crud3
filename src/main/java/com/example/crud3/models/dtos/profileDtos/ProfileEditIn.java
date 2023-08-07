@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 import java.util.Optional;
 
 @Getter
@@ -16,6 +17,7 @@ import java.util.Optional;
 public class ProfileEditIn {
     private String city;
     private String country;
+    @Size()
     @Pattern(regexp = "[0-9]{10}", message = "code posti bayad 10 raghami bashad.")
     private String postCode;
 

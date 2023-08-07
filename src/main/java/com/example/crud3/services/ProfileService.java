@@ -1,39 +1,35 @@
 package com.example.crud3.services;
 
-import com.example.crud3.exceptionHandler.CustomException;
 import com.example.crud3.models.dtos.profileDtos.ProfileEditIn;
 import com.example.crud3.models.dtos.profileDtos.ProfileIn;
 import com.example.crud3.models.dtos.profileDtos.ProfileOut;
 import com.example.crud3.models.entities.ProfileEntity;
 import com.example.crud3.repositories.ProfileRepository;
-import org.springframework.http.HttpStatus;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.validation.annotation.Validated;
 
+import javax.validation.Valid;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
+@AllArgsConstructor
+@Validated
 public class ProfileService {
     final ProfileRepository profileRepository;
 
-    public ProfileService(ProfileRepository profileRepository) {
-        this.profileRepository = profileRepository;
-    }
-
-    public ProfileOut createProfile(ProfileIn model) {
+    public ProfileEntity createProfile(@Valid ProfileIn model) {
         ProfileEntity profileEntity = model.convertToEntity(new ProfileEntity());
-        ProfileEntity profile = profileRepository.save(profileEntity);
-        return new ProfileOut(profile);
-    }
-
-    public ProfileOut updateProfile(Long id, ProfileEditIn model) {
-        ProfileEntity profile = profileRepository.findById(id).orElseThrow(() -> new CustomException("Profile not found", 1002, HttpStatus.NOT_FOUND));
-        model.convertToEntity(new ProfileEntity());
-        ProfileEntity updatedProfile = profileRepository.save(profile);
-        return new ProfileOut(updatedProfile);
+        return profileEntity;
     }
 
     public List<ProfileOut> getAllProfiles() {
         return profileRepository.findAll().stream().map(ProfileOut::new).collect(Collectors.toList());
+    }
+
+    public ProfileEntity updateProfile(Long id, @Valid ProfileEditIn model) {
+        ProfileEntity profileEntity = model.convertToEntity(new ProfileEntity());
+        return profileRepository.updateById(id, profileEntity);
     }
 }

@@ -6,7 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.List;
+import java.time.LocalDateTime;
 import java.util.Set;
 
 @Getter
@@ -15,6 +15,7 @@ import java.util.Set;
 @AllArgsConstructor
 public class PostIn {
     private String title;
+    private LocalDateTime publishDate;
     private Set<Long> tagIds;
 
     public PostEntity convertToEntity(PostEntity entity) {
@@ -22,6 +23,7 @@ public class PostIn {
             entity = new PostEntity();
         }
         entity.setTitle(title);
+        entity.setPublishDate(publishDate);
         return entity;
     }
 }

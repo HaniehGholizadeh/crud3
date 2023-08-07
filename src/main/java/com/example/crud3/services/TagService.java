@@ -7,20 +7,18 @@ import com.example.crud3.models.dtos.tagDtos.TagOut;
 import com.example.crud3.models.entities.TagEntity;
 import com.example.crud3.repositories.PostRepository;
 import com.example.crud3.repositories.TagRepository;
+import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
+@AllArgsConstructor
 public class TagService {
+
     final TagRepository tagRepository;
     final PostRepository postRepository;
-
-    public TagService(TagRepository tagRepository, PostRepository postRepository) {
-        this.tagRepository = tagRepository;
-        this.postRepository = postRepository;
-    }
 
     public TagOut create(TagIn model) {
         TagEntity tagEntity = model.convertToEntity(new TagEntity());

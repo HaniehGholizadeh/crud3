@@ -2,6 +2,8 @@ package com.example.crud3.models.entities;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
 
 import javax.persistence.*;
 
@@ -10,10 +12,6 @@ import javax.persistence.*;
 @Getter
 @Setter
 public class UserEntity {
-    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
-    @JoinColumn(name = "profile_id")
-    private ProfileEntity profile;
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -26,7 +24,9 @@ public class UserEntity {
     @Column(unique = true)
     private String email;
 
-
+    @Cascade(CascadeType.PERSIST)
+    @OneToOne(fetch = FetchType.LAZY, mappedBy = "user")
+    private ProfileEntity profile;
 }
 
 
