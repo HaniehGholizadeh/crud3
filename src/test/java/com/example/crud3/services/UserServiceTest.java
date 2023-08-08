@@ -119,7 +119,7 @@ public class UserServiceTest {
     private ProfileEntity profileEntity() {
         ProfileEntity profileEntity = new ProfileEntity();
         profileEntity.setId(1L);
-        profileEntity.setCity("tehran");
+        profileEntity.setCity("TEHRAN");
         profileEntity.setCountry("iran");
         profileEntity.setPostCode("0123456789");
         return profileEntity;
