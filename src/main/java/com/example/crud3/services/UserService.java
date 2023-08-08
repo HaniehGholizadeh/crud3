@@ -12,13 +12,8 @@ import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
-import javax.crypto.SecretKeyFactory;
-import javax.crypto.spec.PBEKeySpec;
 import java.security.NoSuchAlgorithmException;
-import java.security.SecureRandom;
 import java.security.spec.InvalidKeySpecException;
-import java.security.spec.KeySpec;
-import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -34,8 +29,9 @@ public class UserService {
         return new UserOut(userRepository.findById(id).get());
     }
 
-    public UserOut createUser(UserIn model) throws NoSuchAlgorithmException, InvalidKeySpecException {
-        model.setPassword((hashPassword(model.getPassword())));
+    public UserOut createUser(UserIn model) {
+//        model.setPassword((hashPassword(model.getPassword())));
+        model.setPassword(model.getPassword() + "hash");
         UserEntity userEntity = model.convertToEntity(new UserEntity());
         ProfileEntity profileEntity = profileService.createProfile(model.getProfileIn());
         userEntity.setProfile(profileEntity);
@@ -44,15 +40,15 @@ public class UserService {
         return new UserOut(userEntity);
     }
 
-    private String hashPassword(String password) throws NoSuchAlgorithmException, InvalidKeySpecException {
-        SecureRandom random = new SecureRandom();
-        byte[] salt = new byte[16];
-        random.nextBytes(salt);
-        KeySpec spec = new PBEKeySpec(password.toCharArray(), salt, 65536, 128);
-        SecretKeyFactory factory = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA1");
-        byte[] hash = factory.generateSecret(spec).getEncoded();
-        return Arrays.toString(hash);
-    }
+//    private String hashPassword(String password) throws NoSuchAlgorithmException, InvalidKeySpecException {
+//        SecureRandom random = new SecureRandom();
+//        byte[] salt = new byte[16];
+//        random.nextBytes(salt);
+//        KeySpec spec = new PBEKeySpec(password.toCharArray(), salt, 65536, 128);
+//        SecretKeyFactory factory = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA1");
+//        byte[] hash = factory.generateSecret(spec).getEncoded();
+//        return Arrays.toString(hash);
+//    }
 
     public List<UserOut> getAllUsers() throws CustomException {
         return userRepository.findAll().stream().map(UserOut::new).collect(Collectors.toList());
@@ -66,9 +62,9 @@ public class UserService {
 
     public UserOut updateUser(Long id, UserEditIn model) throws NoSuchAlgorithmException, InvalidKeySpecException {
         check(id);
-        if (model.getPassword() != null) {
-            model.setPassword(hashPassword(model.getPassword()));
-        }
+//        if (model.getPassword() != null) {
+//            model.setPassword(hashPassword(model.getPassword()));
+//        }
         UserEntity userEntity = model.convertToEntity(userRepository.findById(id).get());
         ProfileEntity profileEntity = userEntity.getProfile();
         profileService.updateProfile(profileEntity, model.getProfileEditIn());
