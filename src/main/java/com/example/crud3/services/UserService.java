@@ -12,10 +12,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
-import java.security.NoSuchAlgorithmException;
-import java.security.spec.InvalidKeySpecException;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
@@ -50,8 +47,8 @@ public class UserService {
 //        return Arrays.toString(hash);
 //    }
 
-    public List<UserOut> getAllUsers() throws CustomException {
-        return userRepository.findAll().stream().map(UserOut::new).collect(Collectors.toList());
+    public List<UserOut> getAllUsers() {
+        return userRepository.findAll().stream().map(UserOut::new).toList();
     }
 
     public void deleteById(Long id) {
@@ -60,14 +57,15 @@ public class UserService {
     }
 
 
-    public UserOut updateUser(Long id, UserEditIn model) throws NoSuchAlgorithmException, InvalidKeySpecException {
+    public UserOut updateUser(Long id, UserEditIn model) {
         check(id);
 //        if (model.getPassword() != null) {
 //            model.setPassword(hashPassword(model.getPassword()));
 //        }
         UserEntity userEntity = model.convertToEntity(userRepository.findById(id).get());
         ProfileEntity profileEntity = userEntity.getProfile();
-        profileService.updateProfile(profileEntity, model.getProfileEditIn());
+        profileEntity = profileService.updateProfile(profileEntity, model.getProfileEditIn());
+        userEntity.setProfile(profileEntity);
         return new UserOut(userRepository.save(userEntity));
     }
 
