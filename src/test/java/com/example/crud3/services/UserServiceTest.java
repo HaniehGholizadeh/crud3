@@ -1,4 +1,5 @@
 package com.example.crud3.services;
+
 import com.example.crud3.models.dtos.profileDtos.ProfileEditIn;
 import com.example.crud3.models.dtos.profileDtos.ProfileIn;
 import com.example.crud3.models.dtos.userDtos.UserEditIn;
@@ -25,7 +26,6 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doReturn;
-import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
 public class UserServiceTest {
@@ -79,6 +79,8 @@ public class UserServiceTest {
 
         List<UserOut> outs = userService.getAllUsers();
 
+        assertEquals(outs.size(), entities.size());
+
         for (int j = 0; j < entities.size(); j++) {
             int i = j;
             assertAll(
@@ -88,6 +90,7 @@ public class UserServiceTest {
                     () -> assertEquals(entities.get(i).getProfile().getCity(), outs.get(i).getProfileOut().getCity()),
                     () -> assertEquals(entities.get(i).getProfile().getPostCode(), outs.get(i).getProfileOut().getPostCode()));
         }
+
     }
 
     @Test

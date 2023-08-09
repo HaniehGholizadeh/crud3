@@ -1,5 +1,6 @@
 package com.example.crud3.services;
 
+import com.example.crud3.exceptionHandler.CustomException;
 import com.example.crud3.models.dtos.postDtos.PostIn;
 import com.example.crud3.models.dtos.postDtos.PostOut;
 import com.example.crud3.models.dtos.tagDtos.TagOut;
@@ -17,11 +18,9 @@ import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
 
-import static org.junit.jupiter.api.Assertions.assertAll;
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doReturn;
-import static org.mockito.Mockito.when;
 
 
 @RunWith(MockitoJUnitRunner.class)
@@ -48,10 +47,16 @@ public class PostServiceTest {
         doReturn(tagEntities(1)).when(tagRepository).findAllById(ArgumentMatchers.anySet());
         doReturn(postEntity(1)).when(postRepository).save(any(PostEntity.class));
         PostOut postOut = postService.create(postIn);
-        assertAll(
-                () -> assertEquals(postOut.getTitle(), postIn.getTitle()),
-                () -> assertEquals(postOut.getPublishDate(), postIn.getPublishDate()),
-                () -> assertEquals(postOut.getTags().stream().map(TagOut::getId).collect(Collectors.toSet()), postIn.getTagIds().stream().collect(Collectors.toSet())));
+        assertAll(() -> assertEquals(postOut.getTitle(), postIn.getTitle()), () -> assertEquals(postOut.getPublishDate(), postIn.getPublishDate()), () -> assertEquals(postOut.getTags().stream().map(TagOut::getId).collect(Collectors.toSet()), postIn.getTagIds().stream().collect(Collectors.toSet())));
+    }
+
+    @Test
+    public void create_CustomException_exception() {
+        doReturn(tagEntities(1)).when(tagRepository).findAllById(ArgumentMatchers.anySet());
+        doReturn(postEntity(1)).when(postRepository).save(any(PostEntity.class));
+        PostIn postIn = postIn(1);
+        postIn.setPublishDate(LocalDateTime.of(2020, 10, 1, 15, 0));
+        assertThrows(CustomException.class, () -> postService.create(postIn));
     }
 
     @Test
@@ -63,7 +68,27 @@ public class PostServiceTest {
     }
 
     @Test
-    public void getAllPosts() {
+    public void getAllPosts_success() {
+        List<PostEntity> entities = postEntities(3);
+
+        doReturn(entities).when(postRepository).findAll();
+
+        List<PostOut> outs = postService.getAllPosts();
+
+        assertEquals(outs.size(), entities.size());
+
+        for (int j = 0; j < entities.size(); j++) {
+            int i = j;
+            assertAll(() -> assertEquals(entities.get(i).getTitle(), outs.get(i).getTitle()), () -> assertEquals(entities.get(i).getPublishDate(), outs.get(i).getPublishDate()), () -> assertEquals(entities.get(i).getTags().stream().map(TagEntity::getId).collect(Collectors.toSet()), outs.get(i).getTags().stream().map(TagOut::getId).collect(Collectors.toSet())));
+        }
+
+    }
+
+    @Test
+    public void getAllPosts_CustomException_exception() {
+        List<PostEntity> entities = new ArrayList<>();
+        doReturn(entities).when(postRepository).findAll();
+        assertThrows(CustomException.class, () -> postService.getAllPosts());
     }
 
     @Test
@@ -94,7 +119,7 @@ public class PostServiceTest {
             tags.add(tag);
         }
         postEntity.setTags(new HashSet<>(tags));
-        postEntity.setPublishDate(LocalDateTime.of(2024, 10, 28, 15, 0));
+        postEntity.setPublishDate(LocalDateTime.of(2023, 10, 1 + value, 15, 0));
         return postEntity;
     }
 
@@ -107,5 +132,14 @@ public class PostServiceTest {
             tags.add(tag);
         }
         return tags;
+    }
+
+    private List<PostEntity> postEntities(int count) {
+        List<PostEntity> posts = new ArrayList<>();
+        for (int i = 0; i < count; i++) {
+            PostEntity post = postEntity(i);
+            posts.add(post);
+        }
+        return posts;
     }
 }

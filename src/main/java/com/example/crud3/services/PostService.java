@@ -27,7 +27,7 @@ public class PostService {
         this.tagRepository = tagRepository;
     }
 
-    public PostOut create(PostIn model) {
+    public PostOut create(PostIn model) throws CustomException {
         if (model.getPublishDate().isBefore(LocalDateTime.now())) {
             throw new CustomException("date and time is invalid", 1111, HttpStatus.BAD_REQUEST);
         }
@@ -57,8 +57,12 @@ public class PostService {
         postRepository.deleteById(id);
     }
 
-    public List<PostOut> getAllPosts() {
-        return postRepository.findAll().stream().map(PostOut::new).toList();
+    public List<PostOut> getAllPosts() throws CustomException {
+        List<PostOut> postOuts = postRepository.findAll().stream().map(PostOut::new).toList();
+        if (postOuts.isEmpty()) {
+            throw new CustomException("There is no exist any post", 1002, HttpStatus.NOT_FOUND);
+        }
+        return postOuts;
     }
 
 

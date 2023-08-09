@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import javax.validation.ConstraintViolationException;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
@@ -27,7 +28,7 @@ public class UserIn {
     private ProfileIn profileIn;
 
 
-    public UserEntity convertToEntity(UserEntity entity) {
+    public UserEntity convertToEntity(UserEntity entity){
         if (entity == null) {
             entity = new UserEntity();
         }
