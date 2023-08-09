@@ -11,6 +11,8 @@ import org.hibernate.Hibernate;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Getter
 @Setter
@@ -22,7 +24,7 @@ public class PostOut {
     private LocalDateTime publishDate;
     private LocalDateTime creationDate;
     private List<CommentOut> commentIds;
-    private List<TagOut> tags;
+    private Set<TagOut> tags;
 
     public PostOut(PostEntity entity) {
         if (entity != null) {
@@ -34,7 +36,7 @@ public class PostOut {
                 commentIds = entity.getComments().stream().map(CommentOut::new).toList();
             }
             if (Hibernate.isInitialized(entity.getTags())) {
-                tags = entity.getTags().stream().map(TagOut::new).toList();
+                tags = entity.getTags().stream().map(TagOut::new).collect(Collectors.toSet());
             }
         }
     }

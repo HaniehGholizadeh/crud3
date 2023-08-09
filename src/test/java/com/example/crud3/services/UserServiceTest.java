@@ -101,10 +101,10 @@ public class UserServiceTest {
         UserEditIn userEditIn = userEditIn(2);
         UserEntity userEntity = userEntity(1);
 
-        when(profileRepository.existsById(1L)).thenReturn(true);
-        when(userRepository.findById(1L)).thenReturn(Optional.of(userEntity));
-        when(profileService.updateProfile(any(ProfileEntity.class), any(ProfileEditIn.class))).thenReturn(profileEntity(2));
-        when(userRepository.save(any(UserEntity.class))).thenReturn(userEntity);
+        doReturn(true).when(profileRepository).existsById(1L);
+        doReturn(Optional.of(userEntity)).when(userRepository).findById(1L);
+        doReturn(profileEntity(2)).when(profileService).updateProfile(any(ProfileEntity.class), any(ProfileEditIn.class));
+        doReturn(userEntity).when(userRepository).save(any(UserEntity.class));
 
         UserOut userOut = userService.updateUser(1L, userEditIn);
 
@@ -173,7 +173,4 @@ public class UserServiceTest {
         return userEntities;
     }
 
-    private void returnVoid() {
-        return;
-    }
 }
