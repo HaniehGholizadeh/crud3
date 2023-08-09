@@ -45,9 +45,7 @@ public class PostServiceTest {
     @Test
     public void create_success() {
         PostIn postIn = postIn(1);
-//        when(tagRepository.findAllById(ArgumentMatchers.anySet())).thenReturn(tagEntities(1));
         doReturn(tagEntities(1)).when(tagRepository).findAllById(ArgumentMatchers.anySet());
-//        when(postRepository.save(any(PostEntity.class))).thenReturn(postEntity(1));
         doReturn(postEntity(1)).when(postRepository).save(any(PostEntity.class));
         PostOut postOut = postService.create(postIn);
         assertAll(
